@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\Parque\ParqueController;
 use App\Http\Controllers\Parque\SensorController;
 use App\Http\Controllers\Parque\UsuarioController;
@@ -24,4 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post("/registroDueño", [UsuarioController::class, "crearDueño"]);
 Route::get("/pero", [SensorController::class, "getAllSensores"]);
+
+Route::post("/login",[UsuarioController::class,"InicioSesion"]);
+
+Route::post("/telefonoregistr/{url}",[UsuarioController::class,"registrarSMS"])->name('telefonoregistr')->middleware('signed');
+Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacionmovil"])->name('validarnumero')->middleware('signed');
 Route::post("/addParque", [ParqueController::class, "addParque"]);

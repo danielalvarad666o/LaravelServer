@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Parque;
 use App\Http\Controllers\Controller;
 use App\Models\ModelosParque\Parque;
 use App\Models\User;
+use Database\Seeders\AreasParqueSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\callback;
 
 class ParqueController extends Controller
 {
@@ -32,11 +35,10 @@ class ParqueController extends Controller
             ], 400);
         }
 
-        $hola = 'hola';
-
         $parque = new Parque();
         $parque->nombre = $request->nombre;
-        $parque->dueño_id = $request->url();
+        //$parque->dueño_id = $request->url();
+        $parque->dueño_id = 1;
         $parque->reglas = $request->reglas;
         $parque->medida_largoTerreno = $request->medida_largoTerreno;
         $parque->medida_anchoTerreno = $request->medida_anchoTerreno;
@@ -44,6 +46,7 @@ class ParqueController extends Controller
         $parque->cantidad_entradas = $request->cantidad_entradas;
         $parque->cantidad_salidas = $request->cantidad_salidas;
         $parque->save();
+
 
         if($parque->save()){
             return response()->json([
