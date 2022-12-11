@@ -9,4 +9,8 @@ class ParqueArea extends Model
 {
     use HasFactory;
     protected $table = 'parque_areas';
+    public function parque()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

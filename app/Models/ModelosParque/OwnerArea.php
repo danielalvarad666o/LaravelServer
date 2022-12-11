@@ -5,12 +5,8 @@ namespace App\Models\ModelosParque;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sensor extends Model
+class OwnerArea extends Model
 {
     use HasFactory;
-    protected $table = 'sensores';
-    public function parque()
-    {
-        return $this->belongsTo(Parque::class);
-    }
+    protected $table = 'owners_areas';
 }

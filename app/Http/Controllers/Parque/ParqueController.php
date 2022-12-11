@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Parque;
 
 use App\Http\Controllers\Controller;
+use App\Models\ModelosParque\OwnerArea;
 use App\Models\ModelosParque\Parque;
+use App\Models\ModelosParque\ParqueArea;
 use App\Models\User;
 use Database\Seeders\AreasParqueSeeder;
 use Illuminate\Http\Request;
@@ -37,8 +39,7 @@ class ParqueController extends Controller
 
         $parque = new Parque();
         $parque->nombre = $request->nombre;
-        //$parque->dueño_id = $request->url();
-        $parque->dueño_id = 1;
+        $parque->dueño_id = $request->user()->id;
         $parque->reglas = $request->reglas;
         $parque->medida_largoTerreno = $request->medida_largoTerreno;
         $parque->medida_anchoTerreno = $request->medida_anchoTerreno;
@@ -46,6 +47,13 @@ class ParqueController extends Controller
         $parque->cantidad_entradas = $request->cantidad_entradas;
         $parque->cantidad_salidas = $request->cantidad_salidas;
         $parque->save();
+
+        $areas = DB::select('select * from parque_areas where status = ?', [1]);
+        foreach($areas as $areas){
+
+        }
+        $ownerAreas = new OwnerArea();
+
 
 
         if($parque->save()){
@@ -56,6 +64,10 @@ class ParqueController extends Controller
                 "data"          => $parque
             ], 201);
         }
+    }
+
+    public function crearAreas($var){
+
     }
 
     public function getAllParques(Request $request){

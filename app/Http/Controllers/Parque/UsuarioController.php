@@ -61,7 +61,7 @@ class UsuarioController extends Controller
         $url = URL::temporarySignedRoute(
             'validarnumero', now()->addMinutes(30), ['url' => $valor]);
 
-        processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(10));
+        processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(20));
 
         if ($user->save()) {
             return response()->json([
@@ -103,12 +103,20 @@ class UsuarioController extends Controller
             ]);
         }
 
+        $token= $user->createToken("auth_token")->plainTextToken;
         return response()->json([
-            'status' => true,
             'msg' => "Inicio sesion correctamente",
-            //  'token'=> $user->createToken("Token")->plainTextToken
+            'token'=> $token
         ], 200);
 
+    }
+
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+        return response()->json([
+            "status"        => 200,
+            "msg"           => "Has salido de la sesion de manera adecuada"
+        ], 200);
     }
 
     public function numerodeverificacionmovil(Request $request)

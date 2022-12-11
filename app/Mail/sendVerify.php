@@ -49,7 +49,7 @@ class sendVerify extends Mailable
         return new Content(
             view: 'email.verificar',
             with:[
-                'name'=>$this->user->nombre,
+                'nombre'=>$this->user->nombre,
                 'url'=>$this->url
             ]
         );
