@@ -50,9 +50,11 @@ class ParqueController extends Controller
 
         $areas = DB::select('select * from parque_areas where status = ?', [1]);
         foreach($areas as $areas){
-
+            $ownerAreas = new OwnerArea();
+            $ownerAreas->area_id = $areas->id;
+            $ownerAreas->parque_id = $parque->id;
+            $ownerAreas->save();
         }
-        $ownerAreas = new OwnerArea();
 
 
 
