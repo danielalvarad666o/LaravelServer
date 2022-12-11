@@ -28,4 +28,9 @@ Route::post("/login",[UsuarioController::class,"InicioSesion"]);
 
 Route::post("/telefonoregistr/{url}",[UsuarioController::class,"registrarSMS"])->name('telefonoregistr')->middleware('signed');
 Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacionmovil"])->name('validarnumero')->middleware('signed');
-Route::post("/addParque", [ParqueController::class, "addParque"]);
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post("/addParque", [ParqueController::class, "addParque"]);
+    Route::get("/logout", [UsuarioController::class, "logout"]);
+});

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use App\Models\ModelosParque\Parque;
 use App\Models\ModelosParque\Tarjeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,5 +48,10 @@ class User extends Authenticatable
     public function tarjeta()
     {
         return $this->hasOne(Tarjeta::class);
+    }
+
+    public function parques()
+    {
+        return $this->hasMany(Parque::class);
     }
 }

@@ -18,14 +18,32 @@ class AreasParqueSeeder extends Seeder
 
     protected $user;
     protected $parque;
-    public function run(Parque $parque)
+    public function run()
     {
-        $this->parque = $parque;
+        $parque_data1 = [
+            "nombre_area" => "Bosque",
+            "descripcion" => "A forest where the children disappears"
+        ];
+        $parque_data2 = [
+            "nombre_area" => "Zona de Juegos",
+            "descripcion" => "Comedor"
+        ];
+        $parque_data3 = [
+            "nombre_area" => "Entradas",
+            "descripcion" => "Zona de entradas"
+        ];
+        $parque_data4 = [
+            "nombre_area" => "Salidas",
+            "descripcion" => "Zona de salidas"
+        ];
 
-        ParqueArea::insert([
-            ['parque_id' => $parque->id],
-            ['nombre_area' => 'Bosque'],
-            ['descripcion' => 'Un bosque donde los mas pequeños pueden perderse']
-        ]);
+        $parque1 = new ParqueArea($parque_data1);
+        $parque1->save();
+        $parque2 = new ParqueArea($parque_data2);
+        $parque2->save();
+        $parque3 = new ParqueArea($parque_data3);
+        $parque3->save();
+        $parque4 = new ParqueArea($parque_data4);
+        $parque4->save();
     }
 }
