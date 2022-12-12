@@ -85,6 +85,12 @@ class ParqueController extends Controller
 
     public function getOnePark(Request $request, $id)
     {
+        $parqueActivo = DB::table('parques')->where('id', $id)->where('status', false)->exists();
+        if($parqueActivo){
+            return response()->json([
+                'msg'=>'Este parque ya no se encuentra activo'
+            ]);
+        }
         $idUser = $request->user()->id;
         // $userParque = DB::table('parques')->where('dueño_id', $idUser)->first();
         $user = DB::table('parques')->where('dueño_id', $idUser)->where('id', $id)->exists();
@@ -127,6 +133,13 @@ class ParqueController extends Controller
                 "error" => $validacion->errors(),
                 "data" => null,
             ], 400);
+        }
+
+        $parqueActivo = DB::table('parques')->where('id', $id)->where('status', false)->exists();
+        if($parqueActivo){
+            return response()->json([
+                'msg'=>'Este parque ya no se encuentra activo'
+            ]);
         }
 
         $parque = Parque::find($id);
