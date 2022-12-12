@@ -24,9 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post("/registroDueño", [UsuarioController::class, "crearDueño"]);
 Route::get("/pero", [SensorController::class, "getAllSensores"]);
 
-Route::post("/login",[UsuarioController::class,"InicioSesion"]);
+//Route::middleware(['verifyStatus'])->group(function(){
 
-Route::post("/telefonoregistr/{url}",[UsuarioController::class,"registrarSMS"])->name('telefonoregistr')->middleware('signed');
+Route::post("/login",[UsuarioController::class,"InicioSesion"]);
+//});
+
+Route::post("/telefonoregistr",[UsuarioController::class,"registrarSMS"]);
 Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacionmovil"])->name('validarnumero')->middleware('signed');
 
 

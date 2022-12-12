@@ -61,7 +61,7 @@ class UsuarioController extends Controller
         $url = URL::temporarySignedRoute(
             'validarnumero', now()->addMinutes(30), ['url' => $valor]);
 
-        processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(20));
+        processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
 
         if ($user->save()) {
             return response()->json([
@@ -126,35 +126,32 @@ class UsuarioController extends Controller
         }
         srand(time());
 
-        $numero_aleatorio2 = rand(5000, 6000);
+       // $numero_aleatorio2 = rand(5000, 6000);
         $numeroiddelaurl = $request->url;
 
-        $url = URL::temporarySignedRoute(
-            'telefonoregistr', now()->addMinutes(30), ['url' => $numero_aleatorio2]
-        );
+      
         $user = User::where('id', $numeroiddelaurl)->first();
 
-        processSMS::dispatch($user, $url)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(10));
+        processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(4));
 
-        processVerify::dispatch($user, $url)->onQueue('processVerify')->onConnection('database')->delay(now()->addSeconds(15));
+     //   processVerify::dispatch($user, $url)->onQueue('processVerify')->onConnection('database')->delay(now()->addSeconds(15));
 
         return response()->json([
-            "msg" => "Tu numero de verificacion a sido enviada a tu telefono,  en breve recibiras un correo con instrucciones",
+            "msg" => "Tu numero de verificacion a sido enviada a tu telefono. ",
 
         ], 201);
     }
 
-    public function registrarSMS(Request $request, $url)
-    {
-        if (!$request->hasValidSignature()) {
-            abort(401, "Codigo incorrecto");
-        }
+    public function registrarSMS(Request $request)
 
+    
+    {
         $validacion = Validator::make($request->all(), [
 
             'codigo' => 'required|digits:4',
 
         ]);
+  
         if ($validacion->fails()) {
             return response()->json([
                 "error" => $validacion->errors(),
