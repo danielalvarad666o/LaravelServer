@@ -56,8 +56,6 @@ class ParqueController extends Controller
             $ownerAreas->save();
         }
 
-
-
         if($parque->save()){
             return response()->json([
                 "status"        => 201,
@@ -68,23 +66,48 @@ class ParqueController extends Controller
         }
     }
 
-    public function crearAreas($var){
-
-    }
-
     public function getAllParques(Request $request){
-        $id = $request->url();
-        $parque = DB::table('parques')
-            ->join('users', 'parques.dueño_id', '=', 'users.id')
+        $id = $request->user()->id;
+        $parques = DB::table('parques')
             ->where('status', true)->where('dueño_id', $id)
             ->get();
-        return response()->json([
-            "status"=>200,
-            "msg"=>"Informacion localizada",
-            "error"=>null,
-            // "data"=>Persona::all()
-            "data"=>$parque
-        ],200);
-        // Parque::where('status', true)->get()
+        $user = DB::table('parques')->where('dueño_id', $id)->exists();
+        if($user){
+            return response()->json([
+                "status"=>200,
+                "msg"=>"Informacion localizada",
+                "error"=>null,
+                "data"=>$parques
+            ],200);
+        }else{
+            return response()->json([
+                'info'=>null, 
+                'msg'=>'No se encontro ningun parque'
+            ]);
+        }
+    }
+
+    public function getOnePark(Request $request, $id){
+        $idUser = $request->user()->id;
+        // $userParque = DB::table('parques')->where('dueño_id', $idUser)->first();
+        $user = DB::table('parques')->where('dueño_id', $idUser)->where('id', $id)->exists();
+        if($user){
+            $parque = Parque::find($id);
+            if($parque){
+                return response()->json([
+                    'msg' => 'Se encontro la informacion',
+                    'data' => $parque
+                ]);
+            }else{
+                return response()->json([
+                    'msg'=>'No se encontro ese parque en especifico'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'info'=>null,
+                'msg'=> 'No tienes acceso a este parque'
+            ]);
+        }
     }
 }
