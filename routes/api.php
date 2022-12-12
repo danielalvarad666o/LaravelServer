@@ -4,6 +4,7 @@ use App\Http\Controllers\Parque\ParqueController;
 use App\Http\Controllers\Parque\SensorController;
 use App\Http\Controllers\Parque\UsuarioController;
 use App\Http\Controllers\Parque\VisitanteController;
+use App\Models\ModelosParque\Visitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,12 +35,21 @@ Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacio
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    //
     Route::post("/addParque", [ParqueController::class, "addParque"]);
     Route::get("/traerparques", [ParqueController::class, "getAllParques"]);
-    Route::get("/logout", [UsuarioController::class, "logout"]);
     Route::get("/traeparque/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+");
     Route::put("/editarparque/{id}", [ParqueController::class,"editarParque"])->where("id", "[0-9]+");
     Route::delete("/borrarParque/{id}", [ParqueController::class,"borrarParque"]);
+
+    //
     Route::post("/tarjeta", [VisitanteController::class, "crearTarjeta"]);
     Route::post("/addVisitante/{tarjeta}", [VisitanteController::class,"crearVisitante"])->where("id", "[0-9]+");
+    Route::get("/traervisitantes", [VisitanteController::class, "getAllVisitantes"]);
+    Route::get("/traevisitante/{id}", [VisitanteController::class, "getOneVisitor"])->where("id", "[0-9]+");
+    Route::put("/editarvisitante/{id}", [VisitanteController::class, "editarVisitante"])->where("id", "[0-9]+");
+    Route::delete("/borrarVisitante/{id}", [VisitanteController::class,"borrarVisitante"]);
+
+    //
+    Route::get("/logout", [UsuarioController::class, "logout"]);
 });
