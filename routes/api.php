@@ -37,4 +37,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get("/traerparques", [ParqueController::class, "getAllParques"]);
     Route::get("/logout", [UsuarioController::class, "logout"]);
     Route::get("/traeparque/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+");
+    Route::put("/editarparque/{id}", [ParqueController::class,"editarParque"])->where("id", "[0-9]+");
+    Route::delete("/borrarParque/{id}", [ParqueController::class,"borrarParque"]);
 });

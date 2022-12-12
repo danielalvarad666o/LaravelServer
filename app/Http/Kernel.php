@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+           
         ],
 
         'api' => [
@@ -47,11 +48,7 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware.
-<<<<<<< HEAD
-     * Hola
-=======
-     *
->>>>>>> 9e6cb941063e61dcf88de33546dfce8f91efd2d0
+
      * These middleware may be assigned to groups or used individually.
      *
      * @var array<string, class-string|string>
