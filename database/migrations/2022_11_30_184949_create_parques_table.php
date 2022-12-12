@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('reglas', 1000);
             $table->integer('medida_largoTerreno');
             $table->integer('medida_anchoTerreno');
-            $table->unsignedBigInteger('cantidad_sensores');
             $table->unsignedBigInteger('cantidad_entradas');
             $table->unsignedBigInteger('cantidad_salidas');
             $table->boolean('status')->default(true);

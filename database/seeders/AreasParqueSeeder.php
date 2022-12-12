@@ -22,11 +22,11 @@ class AreasParqueSeeder extends Seeder
     {
         $parque_data1 = [
             "nombre_area" => "Bosque",
-            "descripcion" => "A forest where the children disappears"
+            "descripcion" => "Un bosque magico donde los infantes son capaces de jugar a las escondidas"
         ];
         $parque_data2 = [
             "nombre_area" => "Zona de Juegos",
-            "descripcion" => "Comedor"
+            "descripcion" => "Juegos como una rueda de la fortuna"
         ];
         $parque_data3 = [
             "nombre_area" => "Entradas",
