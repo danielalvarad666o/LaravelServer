@@ -9,6 +9,7 @@ use App\Jobs\processVerify;
 use App\Models\ModelosParque\Tarjeta;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
@@ -185,9 +186,22 @@ class UsuarioController extends Controller
         }
 
     }
-    public function UserInfo(Request $request, $id)
+    public function UserInfo($id)
     {
-        
-
+        $user = DB::table('users')->where('id', $id)->exists();
+        if ($user) {
+            $user = User::find($id);
+            if ($user) {
+                return response()->json([
+                    'msg' => 'Se encontro la informacion',
+                    'data' => $user,
+                ]);
+            } 
+        } else {
+            return response()->json([
+                'info' => null,
+                'msg' => 'No se encontro informacion',
+            ]);
+        }
     }
 }
