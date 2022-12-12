@@ -47,7 +47,7 @@ class sendMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'email.welcome',
+            view: 'Email.welcome',
             with:[
                 'nombre'=>$this->user->nombre,
                 'email'=>$this->user->email,
