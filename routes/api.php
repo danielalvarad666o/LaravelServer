@@ -27,9 +27,9 @@ Route::post("/registroDueño", [UsuarioController::class, "crearDueño"]);
 Route::get("/pero", [SensorController::class, "getAllSensores"]);
 
 Route::middleware(['verifyStatus'])->group(function(){
-Route::post("/login",[UsuarioController::class,"InicioSesion"]);
 });
 
+Route::post("/login",[UsuarioController::class,"InicioSesion"]);
 Route::post("/telefonoregistr",[UsuarioController::class,"registrarSMS"]);
 Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacionmovil"])->name('validarnumero')->middleware('signed');
 
