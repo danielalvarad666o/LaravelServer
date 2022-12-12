@@ -185,4 +185,9 @@ class UsuarioController extends Controller
         }
 
     }
+    public function UserInfo(Request $request, $id)
+    {
+        
+
+    }
 }
