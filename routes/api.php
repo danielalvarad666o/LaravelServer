@@ -32,5 +32,7 @@ Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacio
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post("/addParque", [ParqueController::class, "addParque"]);
+    Route::get("/traerparques", [ParqueController::class, "getAllParques"]);
     Route::get("/logout", [UsuarioController::class, "logout"]);
+    Route::get("/traeparque/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+");
 });
