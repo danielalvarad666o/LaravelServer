@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Parque;
 
 use App\Http\Controllers\Controller;
+use App\Models\ModelosParque\InfoSensor;
 use App\Models\ModelosParque\Parque;
 use App\Models\ModelosParque\Sensor;
 use App\Models\User;
@@ -18,9 +19,7 @@ class SensorController extends Controller
             $request->all(),[
                 'nombre_sensor' => "required|string|max:25",
                 'feed_key'      => "required|string|max:25",
-                'informacion'   => "required|string|max:300",
-                'parque_id'     => "required|integer",
-                'area_parque'   => "required|integer"
+                'informacion'   => "required|string|max:300"
             ]
         );
         if($validacion->fails()){
@@ -36,9 +35,9 @@ class SensorController extends Controller
         $sensor->nombre_sensor = $request->nombre_sensor;
         $sensor->feed_key = $request->feed_key;
         $sensor->informacion = $request->informacion;
-        $sensor->parque_id = $request->parque_id;
-        $sensor->area_parque = $request->area_parque;
         $sensor->save();
+        $infSen = new InfoSensor();
+        $infSen->sensor_id = $sensor->id;
 
         if($sensor->save()){
             return response()->json([
@@ -59,7 +58,7 @@ class SensorController extends Controller
         ]);
 
         // $data = json_decode($response);
-        $parque = Parque::where('dueño_id', $request->id);
+        $parque = Parque::where('dueño_id', $request->user()->id);
         // $a = array('name', 'key');
         // $b = array(1, 2, 3, 4, 5);
 

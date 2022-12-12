@@ -16,10 +16,13 @@ class VerifyStatus
      */
     public function handle(Request $request, Closure $next)
     {
-        
-        if($request->user()->status == 0) 
-        return abort(401,'No eres un usuario activo');
-    else
-    return $next($request);
+
+        // dd($request->user());
+        if ($request->user()->status != 1) {
+            abort(403, 'Seccion no permitida');
+        }
+
+        return $next($request);
+
     }
 }
