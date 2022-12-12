@@ -143,15 +143,15 @@ class ParqueController extends Controller
         }
 
         $parque = Parque::find($id);
-        $parque->nombre = $request->nombre;
-        $parque->reglas = $request->reglas;
-        $parque->medida_largoTerreno = $request->medida_largoTerreno;
-        $parque->medida_anchoTerreno = $request->medida_anchoTerreno;
-        $parque->cantidad_entradas = $request->cantidad_entradas;
-        $parque->cantidad_salidas = $request->cantidad_salidas;
-        $parque->save();
 
         if ($parque) {
+            $parque->nombre = $request->nombre;
+            $parque->reglas = $request->reglas;
+            $parque->medida_largoTerreno = $request->medida_largoTerreno;
+            $parque->medida_anchoTerreno = $request->medida_anchoTerreno;
+            $parque->cantidad_entradas = $request->cantidad_entradas;
+            $parque->cantidad_salidas = $request->cantidad_salidas;
+            $parque->save();
             if($parque->save()){
                 return response()->json([
                     "status"        => 201,

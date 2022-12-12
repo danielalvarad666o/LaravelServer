@@ -18,10 +18,6 @@ return new class extends Migration
             $table->string('nombre_sensor');
             $table->string('feed_key');
             $table->string('informacion', 300);
-            $table->unsignedBigInteger('parque_id');
-            $table->foreign('parque_id')->references('id')->on('parques');
-            $table->unsignedBigInteger('area_parque');
-            $table->foreign('area_parque')->references('id')->on('parque_areas');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
