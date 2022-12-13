@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Parque;
-
 use App\Http\Controllers\Controller;
 use App\Jobs\processEmail;
 use App\Jobs\processSMS;
 use App\Jobs\processVerify;
-use App\Mail\sendMail;
+use App\Mail\SendMail;
 use App\Models\ModelosParque\Tarjeta;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,7 +25,7 @@ class UsuarioController extends Controller
                 'nombre' => "required|string|max:20",
                 'apellidos' => "required|string|max:30",
                 'edad' => "required|integer|min:1|max:120",
-                'email' => "required|string|unique:users|email",
+                'email' => "required|string|email:rfc,dns",
                 'contraseña' => "required|string|min:4",
                 'telefono' => "required|integer",
                 'username' => "required|string|max:20",
@@ -54,7 +52,7 @@ class UsuarioController extends Controller
         $user->apellidos = $request->apellidos;
         $user->edad = $request->edad;
         $user->email = $request->email;
-        $user->contraseña = bcrypt($request->contraseña);
+        $user->contraseña = Hash::make($request->contraseña);
         $user->telefono = $request->telefono;
         $user->username = $request->username;
         $user->codigo = $numero_aleatorio;
@@ -64,9 +62,9 @@ class UsuarioController extends Controller
         $valor = $user->id;
         $url = URL::temporarySignedRoute(
             'validarnumero', now()->addMinutes(30), ['url' => $valor]);
-
-           //  processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
-        Mail::to($user->email)->send(new sendMail($user, $url)); 
+            
+        processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
+        //Mail::to($user->email)->send(new SendMail($user, $url)); 
 
         if ($user->save()) {
             return response()->json([
@@ -101,17 +99,23 @@ class UsuarioController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-
+        // dd($user);
+        
         if (!$user || !Hash::check($request->contraseña, $user->contraseña)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-
+        // if (! $user || ! Hash::check($request->contraseña, $user->contraseña))
+        //     return response()->json([
+        //         'msg'=>'Las credenciales son incorrectas'
+        //     ]);
+        
         $token= $user->createToken("auth_token")->plainTextToken;
         return response()->json([
             'msg' => "Inicio sesion correctamente",
-            'token'=> $token
+            'token'=> $token,
+            'id'=>$user->id
         ], 200);
 
     }
@@ -136,10 +140,9 @@ class UsuarioController extends Controller
 
       
         $user = User::where('id', $numeroiddelaurl)->first();
-        
-   processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(5));
 
-     //   processVerify::dispatch($user, $url)->onQueue('processVerify')->onConnection('database')->delay(now()->addSeconds(15));
+
+        processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(5));
 
         return response()->json([
             "msg" => "Tu numero de verificacion a sido enviada a tu telefono. ",

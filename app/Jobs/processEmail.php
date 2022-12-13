@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\sendMail;
+use App\Mail\SendMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 class processEmail implements ShouldQueue
 {
@@ -23,7 +24,7 @@ class processEmail implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user, $url)
+    public function __construct(User $user, $url)
     {
         $this->user = $user;
         $this->url = $url;
@@ -36,7 +37,7 @@ class processEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(new sendMail($this->user, $this->url)); 
+        Mail::to($this->user->email)->send(new SendMail($this->user, $this->url)); 
         Log::info('Mail Sent');
     }
 }
