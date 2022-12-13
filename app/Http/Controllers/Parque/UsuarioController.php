@@ -62,8 +62,9 @@ class UsuarioController extends Controller
         $valor = $user->id;
         $url = URL::temporarySignedRoute(
             'validarnumero', now()->addMinutes(30), ['url' => $valor]);
-processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
-           //Mail::to($user->email)->send(new SendMail($user, $url)); 
+            
+        processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
+        //Mail::to($user->email)->send(new SendMail($user, $url)); 
 
         if ($user->save()) {
             return response()->json([
@@ -140,7 +141,8 @@ processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('data
       
         $user = User::where('id', $numeroiddelaurl)->first();
 
-      processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(5));
+
+        processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(5));
 
         return response()->json([
             "msg" => "Tu numero de verificacion a sido enviada a tu telefono. ",
