@@ -65,7 +65,7 @@ class UsuarioController extends Controller
         $url = URL::temporarySignedRoute(
             'validarnumero', now()->addMinutes(30), ['url' => $valor]);
 
-            Mail::to($user->email)->send(new sendMail($user, $url)); 
+             processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
 
         if ($user->save()) {
             return response()->json([
@@ -136,14 +136,7 @@ class UsuarioController extends Controller
       
         $user = User::where('id', $numeroiddelaurl)->first();
         
-        Http::withBasicAuth('AC83939905e7c70332ed1adf2ce5eba13e', '45a9c20b8c6ce9f5b2ff260941555113')
-        ->asForm()
-        ->post('https://api.twilio.com/2010-04-01/Accounts/AC83939905e7c70332ed1adf2ce5eba13e/Messages.json',[
-           
-            'To'=>"whatsapp:+521{$user->telefono}",
-            'From'=>'whatsapp:+14155238886',
-            'Body'=>"Tu codigo de verificacion es: {$user->codigo}",
-        ]);
+   processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(5));
 
      //   processVerify::dispatch($user, $url)->onQueue('processVerify')->onConnection('database')->delay(now()->addSeconds(15));
 
