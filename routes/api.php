@@ -24,7 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post("/registroDueño", [UsuarioController::class, "crearDueño"]);
-Route::get("/pero", [SensorController::class, "getAllSensores"]);
 
 Route::middleware(['verifyStatus'])->group(function(){
 });
@@ -53,6 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //
     Route::get("/infoSens", [SensorController::class, "getInfoSensor"]);//last info
+    Route::get("/traerSensores", [SensorController::class, "getAllSensores"]);
     Route::delete("/deleteSensor", [SensorController::class, "borrarSensor"]);
 
     //

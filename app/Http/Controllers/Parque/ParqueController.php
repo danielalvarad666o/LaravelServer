@@ -20,9 +20,7 @@ class ParqueController extends Controller
                 'nombre' => "required|string|max:25",
                 'reglas' => "required|string|max:1000",
                 'medida_largoTerreno' => "required|integer",
-                'medida_anchoTerreno' => "required|integer",
-                'cantidad_entradas' => 'required|integer',
-                'cantidad_salidas' => 'required|integer',
+                'medida_anchoTerreno' => "required|integer"
             ]
         );
         if ($validacion->fails()) {
@@ -40,8 +38,8 @@ class ParqueController extends Controller
         $parque->reglas = $request->reglas;
         $parque->medida_largoTerreno = $request->medida_largoTerreno;
         $parque->medida_anchoTerreno = $request->medida_anchoTerreno;
-        $parque->cantidad_entradas = $request->cantidad_entradas;
-        $parque->cantidad_salidas = $request->cantidad_salidas;
+        $parque->cantidad_entradas = 1;
+        $parque->cantidad_salidas = 1;
         $parque->save();
 
         $areas = DB::select('select * from parque_areas where status = ?', [1]);
