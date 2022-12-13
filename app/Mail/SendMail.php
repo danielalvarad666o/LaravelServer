@@ -67,4 +67,4 @@ class sendMail extends Mailable
     }
 }
 
-}
+
