@@ -65,7 +65,8 @@ class UsuarioController extends Controller
         $url = URL::temporarySignedRoute(
             'validarnumero', now()->addMinutes(30), ['url' => $valor]);
 
-             processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
+           //  processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
+        Mail::to($user->email)->send(new sendMail($user, $url)); 
 
         if ($user->save()) {
             return response()->json([
