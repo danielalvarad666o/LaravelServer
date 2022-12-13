@@ -13,20 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('visitantes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('users');
             $table->string('nombre', 20);
             $table->string('apellidos', 30);
             $table->unsignedBigInteger('edad');
             $table->string('email')->unique();
-            $table->string('contraseña');
             $table->string('telefono');
-            $table->string('codigo');
-            $table->string('username');
             $table->unsignedBigInteger('numero_tarjeta');
             $table->foreign('numero_tarjeta')->references('id')->on('tarjetas');
-            $table->boolean('status')->default(0);
-            $table->rememberToken();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -38,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('visitantes');
     }
 };
