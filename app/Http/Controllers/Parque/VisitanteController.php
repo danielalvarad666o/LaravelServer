@@ -77,9 +77,10 @@ class VisitanteController extends Controller
         }
     }
 
-    public function getAllVisitantes(Request $request)
+    public function getAllVisitantes(Request $request, $id_user)
     {
-        $id = $request->user()->id;
+        // $id = $request->user()->id;
+        $id = $id_user;
         $visitantes = DB::table('visitantes')
             ->where('status', true)->where('usuario_id', $id)
             ->get();

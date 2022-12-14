@@ -37,7 +37,7 @@ Route::get("/user/{id}", [UsuarioController::class,"UserInfo"]);
 Route::middleware(['auth:sanctum'])->group(function () {
     //
     Route::post("/addParque", [ParqueController::class, "addParque"]);
-    Route::get("/traerparques", [ParqueController::class, "getAllParques"]);
+    Route::get("/traerparques/{id}", [ParqueController::class, "getAllParques"])->where("id", "[0-9]+");
     Route::get("/traeparque/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+");
     Route::put("/editarparque/{id}", [ParqueController::class,"editarParque"])->where("id", "[0-9]+");
     Route::delete("/borrarParque/{id}", [ParqueController::class,"borrarParque"]);
