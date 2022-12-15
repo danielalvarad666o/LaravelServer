@@ -150,10 +150,7 @@ class UsuarioController extends Controller
         ], 201);
     }
 
-    public function registrarSMS(Request $request)
-
-    
-    {
+    public function registrarSMS(Request $request){
         $validacion = Validator::make($request->all(), [
 
             'codigo' => 'required|digits:4',

@@ -27,7 +27,7 @@ class VisitanteController extends Controller
         }
     }
 
-    public function crearVisitante(Request $request, $tarjeta)
+    public function crearVisitante(Request $request, $id_user, $tarjeta)
     {
         $validacion = Validator::make(
             $request->all(), [
@@ -49,7 +49,8 @@ class VisitanteController extends Controller
         }
 
         $visitante = new Visitante();
-        $visitante->usuario_id = $request->user()->id;
+        // $visitante->usuario_id = $request->user()->id;
+        $visitante->usuario_id = $id_user;
         $visitante->nombre = $request->nombre;
         $visitante->apellidos = $request->apellidos;
         $visitante->edad = $request->edad;
@@ -100,7 +101,7 @@ class VisitanteController extends Controller
         }
     }
 
-    public function getOneVisitor(Request $request, $id)
+    public function getOneVisitor(Request $request, $id_user, $id)
     {
         $visitanteActivo = DB::table('visitantes')->where('id', $id)->where('status', false)->exists();
         if ($visitanteActivo) {
@@ -109,7 +110,8 @@ class VisitanteController extends Controller
             ]);
         }
 
-        $idUser = $request->user()->id;
+        // $idUser = $request->user()->id;
+        $idUser = $id_user;
         // $userParque = DB::table('parques')->where('dueño_id', $idUser)->first();
         $user = DB::table('visitantes')->where('usuario_id', $idUser)->where('id', $id)->exists();
         if ($user) {
@@ -186,8 +188,9 @@ class VisitanteController extends Controller
         }
     }
 
-    public function borrarVisitante(Request $request, $id){
-        $idUser = $request->user()->id;
+    public function borrarVisitante(Request $request, $id_user, $id){
+        // $idUser = $request->user()->id;
+        $idUser = $id_user;
         $user = DB::table('visitantes')->where('usuario_id', $idUser)->where('id', $id)->exists();
         if($user){
             $visitante = Visitante::find($id);

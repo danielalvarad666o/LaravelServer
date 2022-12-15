@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ParqueController extends Controller
 {
-    public function addParque(Request $request)
+    public function addParque(Request $request, $id_user)
     {
         $validacion = Validator::make(
             $request->all(), [
@@ -34,7 +34,8 @@ class ParqueController extends Controller
 
         $parque = new Parque();
         $parque->nombre = $request->nombre;
-        $parque->dueño_id = $request->user()->id;
+        $parque->dueño_id = $id_user;
+        // $parque->dueño_id = $request->user()->id;
         $parque->reglas = $request->reglas;
         $parque->medida_largoTerreno = $request->medida_largoTerreno;
         $parque->medida_anchoTerreno = $request->medida_anchoTerreno;
@@ -89,9 +90,10 @@ class ParqueController extends Controller
         }
     }
 
-    public function getAllParques(Request $request)
+    public function getAllParques(Request $request, $id_user)
     {
-        $id = $request->user()->id;
+        // $id = $request->user()->id;
+        $id = $id_user;
         $parques = DB::table('parques')
             ->where('status', true)->where('dueño_id', $id)
             ->get();
@@ -111,7 +113,7 @@ class ParqueController extends Controller
         }
     }
 
-    public function getOnePark(Request $request, $id)
+    public function getOnePark(Request $request, $id_user, $id)
     {
         $parqueActivo = DB::table('parques')->where('id', $id)->where('status', false)->exists();
         if ($parqueActivo) {
@@ -119,7 +121,8 @@ class ParqueController extends Controller
                 'msg' => 'Este parque ya no se encuentra activo',
             ]);
         }
-        $idUser = $request->user()->id;
+        // $idUser = $request->user()->id;
+        $idUser = $id_user;
         // $userParque = DB::table('parques')->where('dueño_id', $idUser)->first();
         $user = DB::table('parques')->where('dueño_id', $idUser)->where('id', $id)->exists();
         if ($user) {
@@ -202,9 +205,10 @@ class ParqueController extends Controller
         }
     }
 
-    public function borrarParque(Request $request, $id)
+    public function borrarParque(Request $request, $id_user, $id)
     {
-        $idUser = $request->user()->id;
+        $idUser = $id_user;
+        // $idUser = $request->user()->id;
         $user = DB::table('parques')->where('dueño_id', $idUser)->where('id', $id)->exists();
         if ($user) {
             $parque = Parque::find($id);
