@@ -107,6 +107,7 @@ class ParqueController extends Controller
             ], 200);
         } else {
             return response()->json([
+                "status"=> 400,
                 'info' => null,
                 'msg' => 'No se encontro ningun parque',
             ]);

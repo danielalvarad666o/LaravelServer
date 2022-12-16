@@ -22,10 +22,9 @@ class processVerify implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, $url)
+    public function __construct(User $user)
     {
         $this->user =$user;
-        $this->url = $url;
     }
 
     /**
@@ -35,6 +34,6 @@ class processVerify implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(new sendVerify($this->user, $this->url)); 
+        Mail::to($this->user->email)->send(new sendVerify($this->user)); 
     }
 }
