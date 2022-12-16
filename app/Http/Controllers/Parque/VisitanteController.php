@@ -27,11 +27,10 @@ class VisitanteController extends Controller
         }
     }
 
-    public function crearVisitante(Request $request, $id_user, $tarjeta)
+    public function crearVisitante(Request $request, $id_user, $id_parque)
     {
         $validacion = Validator::make(
             $request->all(), [
-                'parque' => 'required|integer',
                 'nombre' => "required|string|max:20",
                 'apellidos' => "required|string|max:30",
                 'edad' => "required|integer|min:1|max:120",
@@ -56,12 +55,14 @@ class VisitanteController extends Controller
         $visitante->edad = $request->edad;
         $visitante->email = $request->email;
         $visitante->telefono = $request->telefono;
-        $visitante->numero_tarjeta = $tarjeta;
+        $tjt = new Tarjeta();
+        $tjt->save();
+        $visitante->numero_tarjeta = $tjt->id;
         $visitante->save();
 
         $visiparque = new VisitanteParque();
         $visiparque->visitante_id = $visitante->id;
-        $visiparque->parque_id = $request->parque;
+        $visiparque->parque_id = $id_parque;
         $visiparque->save();
 
         if ($visitante->save()) {

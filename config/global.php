@@ -23,9 +23,9 @@ return [
     ],
     'important' => [
         'ipfinal'   => 'http://127.0.0.1:8000',
-        'userIO'    => 'Victor_Almanza',
-        'keyIO'     => '',
-        'group_key' => 'finalproyect'
+        'userIO'    => 'IvonneLoba',
+        'keyIO'     => 'aio_FUJX77yb2kHgVIoUTVOrZpQoj40L',
+        'group_key' => 'viyda'
     ]
 ];
 ?>

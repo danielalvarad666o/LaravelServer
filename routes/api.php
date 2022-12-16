@@ -35,51 +35,29 @@ Route::get("/validarnumero/{url}",[UsuarioController::class,"numerodeverificacio
 Route::get("/user/{id}", [UsuarioController::class,"UserInfo"]);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    //
-    Route::post("/addParque/{id_user}", [ParqueController::class, "addParque"])->where("id_user", "[0-9]+");
-    Route::get("/traerparques/{id}", [ParqueController::class, "getAllParques"])->where("id", "[0-9]+");
-    Route::get("/traeparque/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+");
-    Route::put("/editarparque/{id}", [ParqueController::class,"editarParque"])->where("id", "[0-9]+");
-    Route::delete("/borrarParque/{id}", [ParqueController::class,"borrarParque"]);
 
     //
-    Route::post("/tarjeta", [VisitanteController::class, "crearTarjeta"]);
-    Route::post("/addVisitante/{tarjeta}", [VisitanteController::class,"crearVisitante"])->where("id", "[0-9]+");
-    Route::get("/traervisitantes", [VisitanteController::class, "getAllVisitantes"]);
-    Route::get("/traevisitante/{id}", [VisitanteController::class, "getOneVisitor"])->where("id", "[0-9]+");
-    Route::put("/editarvisitante/{id}", [VisitanteController::class, "editarVisitante"])->where("id", "[0-9]+");
-    Route::delete("/borrarVisitante/{id}", [VisitanteController::class,"borrarVisitante"]);
+    Route::post("/add/{id_user}", [ParqueController::class, "addParque"])->where("id_user", "[0-9]+");
+    Route::get("/parques/{id_user}", [ParqueController::class, "getAllParques"])->where("id", "[0-9]+");
+    Route::get("/parque/{id_user}/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+")->where("id_user", "[0-9]+");
+    Route::put("/editarpark/{id}", [ParqueController::class,"editarParque"])->where("id", "[0-9]+");
+    Route::delete("/borrarpark/{id_user}/{id}", [ParqueController::class,"borrarParque"])->where("id_user", "[0-9]+")->where("id", "[0-9]+");
 
     //
-    Route::get("/infoSens", [SensorController::class, "getInfoSensor"]);//last info
-    Route::get("/traerSensores", [SensorController::class, "getAllSensores"]);
-    Route::delete("/deleteSensor", [SensorController::class, "borrarSensor"]);
+    Route::post("/creartarjeta", [VisitanteController::class, "crearTarjeta"]);
+    Route::post("/anadirvisitanteL/{id_user}/{id_parque}", [VisitanteController::class,"crearVisitante"])->where("id_user", "[0-9]+")->where("id_parque", "[0-9]+");
+    Route::get("/visitantesL/{id_user}", [VisitanteController::class, "getAllVisitantes"])->where("id_user", "[0-9]+");
+    Route::get("/visitante/{id_user}/{id}", [VisitanteController::class, "getOneVisitor"])->where("id_user", "[0-9]+")->where("id", "[0-9]+");
+    Route::put("/editarvisit/{id}", [VisitanteController::class, "editarVisitante"])->where("id", "[0-9]+");
+    Route::delete("/borrarvisit/{id_user}/{id}", [VisitanteController::class,"borrarVisitante"])->where("id_user", "[0-9]+")->where("id", "[0-9]+");
 
     //
-    Route::get("/logout", [UsuarioController::class, "logout"]);
+    Route::get("/traerinfo/{id_user}/{sensor_key}", [SensorController::class, "getInfoSensor"])->where("id_user", "[0-9]+");//last info
+    Route::get("/sensores", [SensorController::class, "getAllSensores"]);
+    Route::get("/sens", [SensorController::class, "InfoSensores"]);
+    Route::delete("/borrarsensor", [SensorController::class, "borrarSensor"]);
+
+    //
+    Route::get("/salirsesionL", [UsuarioController::class, "logout"]);
+
 });
-
-
-//////////////////////////
-//
-Route::post("/anadirparque/{id_user}", [ParqueController::class, "addParque"])->where("id_user", "[0-9]+");
-Route::get("/parques/{id}", [ParqueController::class, "getAllParques"])->where("id", "[0-9]+");
-Route::get("/parque/{id_user}/{id}", [ParqueController::class,"getOnePark"])->where("id", "[0-9]+")->where("id_user", "[0-9]+");
-Route::put("/editarpark/{id}", [ParqueController::class,"editarParque"])->where("id", "[0-9]+");
-Route::delete("/borrarpark/{id_user}/{id}", [ParqueController::class,"borrarParque"])->where("id_user", "[0-9]+")->where("id", "[0-9]+");
-
-//
-Route::post("/creartarjeta", [VisitanteController::class, "crearTarjeta"]);
-Route::post("/anadirvisitante/{id_user}/{tarjeta}", [VisitanteController::class,"crearVisitante"])->where("id_user", "[0-9]+")->where("tarjeta", "[0-9]+");
-Route::get("/visitantes/{id_user}", [VisitanteController::class, "getAllVisitantes"])->where("id_user", "[0-9]+");
-Route::get("/visitante/{id_user}/{id}", [VisitanteController::class, "getOneVisitor"])->where("id_user", "[0-9]+")->where("id", "[0-9]+");
-Route::put("/editarvisit/{id}", [VisitanteController::class, "editarVisitante"])->where("id", "[0-9]+");
-Route::delete("/borrarvisit/{id_user}/{id}", [VisitanteController::class,"borrarVisitante"])->where("id_user", "[0-9]+")->where("id", "[0-9]+");
-
-//
-Route::get("/traerinfo", [SensorController::class, "getInfoSensor"]);//last info
-Route::get("/sensores", [SensorController::class, "getAllSensores"]);
-Route::delete("/borrarsensor", [SensorController::class, "borrarSensor"]);
-
-//
-Route::get("/salirsesion", [UsuarioController::class, "logout"]);

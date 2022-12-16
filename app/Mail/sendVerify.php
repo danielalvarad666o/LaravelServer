@@ -21,10 +21,9 @@ class sendVerify extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user, $url)
+    public function __construct(User $user)
     {
         $this->user= $user;
-    $this->url= $url;
     }
 
     /**
@@ -47,10 +46,9 @@ class sendVerify extends Mailable
     public function content()
     {
         return new Content(
-            view: 'Email.verificar',
+            view: 'email.verificar',
             with:[
-                'nombre'=>$this->user->nombre,
-                'url'=>$this->url
+                'nombre'=>$this->user->nombre
             ]
         );
     }

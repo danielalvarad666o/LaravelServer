@@ -45,5 +45,15 @@ class AreasParqueSeeder extends Seeder
         $parque3->save();
         // $parque4 = new ParqueArea($parque_data4);
         // $parque4->save();
+
+        // $parque_data = [
+        //     "nombre" => "Default1",
+        //     "reglas"=>"1. Ser limpio. 2. No tirar basura 3. Respetar el establecimiento",
+        //     "medida_largoTerreno" => "1200",
+        //     "medida_anchoTerreno" => "1220"
+        // ];
+
+        // $parqueDefault = new Parque($parque_data);
+
     }
 }

@@ -185,51 +185,31 @@ class SensorController extends Controller
         ], 200);
     }
 
-    public function getInfoSensor(Request $request)
+    public function getInfoSensor(Request $request, $id_user, $sensor_key)
     {
-        $validacion = Validator::make(
-            $request->all(), [
-                'parque_id' => 'required|integer',
-                'sensor_key' => "required|string",
-            ]
-        );
-        if ($validacion->fails()) {
-            return response()->json([
-                "status" => 400,
-                "msg" => "No se cumplieron las validaciones",
-                "error" => $validacion->errors(),
-                "data" => null,
-            ], 400);
-        }
 
-        $response = Http::get("http://io.adafruit.com/api/v2/" . config('global.important.userIO') . "/feeds/".$request->sensor_key."/data/last", [
+        $response = Http::get("http://io.adafruit.com/api/v2/" . config('global.important.userIO') . "/feeds/".$sensor_key."/data/last", [
             'X-AIO-Key' => config('global.important.keyIO'),
         ]);
 
-        $parque = Parque::find($request->parque_id);
-        $user = $request->user()->id;
-        $exist = DB::table('parques')->where('dueño_id', $user)->where('id', $request->parque_id);
+        // $user = $request->user()->id;
+        $user = $id_user;
+        $exist = DB::table('parques')->where('dueño_id', $user);
 
-        // return $response;
+        return $response;
 
-        if($exist){
-            if($parque){
-                return response()->json([
-                    "status" => 200,
-                    "msg" => "Informacion localizada",
-                    "error" => null,
-                    "data" => json_decode($response->body()),
-                ], 200);
-            }else{
-                return response()->json([
-                    'msg'=>'Este parque no existe'
-                ], 400);
-            }
-        }else{
-            return response()->json([
-                'msg'=>'Este usuario no es valido'
-            ], 401);
-        }
+        // if($exist){
+        //     return response()->json([
+        //         "status" => 200,
+        //         "msg" => "Informacion localizada",
+        //         "error" => null,
+        //         "data" => json_decode($response->body()),
+        //     ], 200);
+        // }else{
+        //     return response()->json([
+        //         'msg'=>'Este usuario no es valido'
+        //     ], 401);
+        // }
     }
 
     public function traerInfoSensor(Request $request)
@@ -304,5 +284,13 @@ class SensorController extends Controller
                 'msg'=>'No tienes acceso a este sensor'
             ]);
         }
+    }
+
+    public function InfoSensores(){
+       $sensores = DB::table('sensores')->get()->all();
+       return response()->json([
+           "table" => "sensores",
+          "data"=> $sensores
+       ]);
     }
 }

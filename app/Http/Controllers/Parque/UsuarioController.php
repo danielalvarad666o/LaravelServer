@@ -61,7 +61,7 @@ class UsuarioController extends Controller
 
         $valor = $user->id;
         $url = URL::temporarySignedRoute(
-            'validarnumero', now()->addMinutes(30), ['url' => $valor]);
+            'validarnumero', now()->addMinutes(10), ['url' => $valor]);
             
         processEmail::dispatch($user, $url)->onQueue('processEmail')->onConnection('database')->delay(now()->addSeconds(5));
         //Mail::to($user->email)->send(new SendMail($user, $url)); 
@@ -86,7 +86,7 @@ class UsuarioController extends Controller
         $validacion = Validator::make(
             $request->all(),
             [
-                'email' => 'required|email',
+                'email' => 'required|string|email:rfc,dns|max:255',
                 'contraseña' => 'required',
             ]);
 
@@ -144,10 +144,10 @@ class UsuarioController extends Controller
 
         processSMS::dispatch($user)->onQueue('processSMS')->onConnection('database')->delay(now()->addSeconds(5));
 
-        return response()->json([
-            "msg" => "Tu numero de verificacion a sido enviada a tu telefono. ",
-
-        ], 201);
+        processVerify::dispatch($user)->onQueue('processVerify')->onConnection('database')->delay(now()->addSeconds(5));
+        header("Status: 301 Moved Permanently");
+        header("Location:https://mail.google.com");
+        exit;
     }
 
     public function registrarSMS(Request $request){
